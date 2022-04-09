@@ -13,7 +13,7 @@ public class UsersData {
     }
 
     public void addUser(String username, String password){
-        if( username == "admin"){
+        if( username.equals("admin")){
             System.out.println("The username is forbidden and used only by the administrators.");
         }
         User addedUser = new User(username,password);
@@ -24,9 +24,10 @@ public class UsersData {
     public void removeUser(String username){
         boolean found_flag = false;
         for( Map.Entry<User, Boolean> user : usersList.entrySet() ){
-            if( user.getKey().getUsername() == username) {
-                usersList.remove(user);
+            if( user.getKey().getUsername().equals(username)) {
+                usersList.remove(user.getKey(),user.getValue());
                 System.out.println("The user: '" + username + "' was successfully deleted from the system.");
+                found_flag = true;
             }
         }
         if( !(found_flag)) {
@@ -38,7 +39,6 @@ public class UsersData {
             String[] userData = displayEntry(user).split(" / ");
             String dataUsername = userData[0];
             String dataPassword = userData[1];
-            boolean dataAccess = Boolean.parseBoolean(userData[2]);
 
             if( username.equals(dataUsername) && password.equals(dataPassword)){
                 return user;
@@ -48,10 +48,25 @@ public class UsersData {
         return null;
     }
 
+    public void displayAllUsers(){
+        for( Map.Entry<User, Boolean> user : usersList.entrySet() ) {
+            System.out.println( displayEntry(user) );
+        }
+    }
+
     public static String displayEntry(Map.Entry<User, Boolean> user){
         String username = user.getKey().getUsername();
         String password = user.getKey().getPassword();
         boolean admin_access = user.getValue();
         return username + " / " + password + " / " + admin_access;
+    }
+
+    public boolean is_taken(String username){
+        for(Map.Entry<User, Boolean> user : usersList.entrySet() ){
+            if( user.getKey().getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

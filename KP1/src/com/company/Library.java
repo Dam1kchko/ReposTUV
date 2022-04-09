@@ -9,15 +9,15 @@ public class Library {
 
     public Library(String libName) {
         this.libName = libName;
-        this.booksList.add(new Book("a","b","c","d",1945,
-                                        "eha ko",3.4, 1232 ));
+        this.booksList.add(new Book("Annie","Bachko","comedy","A short story for a darkness sword",1945,
+                                        "fantasy,comedy,action,supernatural",3.4, 1232 ));
+        this.booksList.add(new Book("Aaire", "Andrew and the Shadow", "anime", "A rich story of a poor boy", 2012,
+                                            "fantasy,romance", 5.4, 1002));
     }
-
     public List<Book> addBook(Book new_book) {
         booksList.add(new_book);
         return booksList;
     }
-
     public String getBookByIsbn(int isbn_value) {
         int i = 0; boolean flag = false;
         for (i = 0 ; i < booksList.size(); i++) {
@@ -33,13 +33,11 @@ public class Library {
             return " No book with the isbn '" + isbn_value + "' in the library " + this.libName+ " was found.";
         }
     }
-
     @Override
     public String toString() {
         return "\n Library " + this.libName +
                 " has those books in store : \n"+ booksList;
     }
-
     public String displayABook(Book book){
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -53,20 +51,23 @@ public class Library {
         String author = book.getAuthor();
         String genre = book.getGenre();
         String desc = book.getDescription();
-        String[] keyWords = book.getKeyWords();
         int yearOfPublishing = book.getYearOfPublishing();
+        String words = book.getKeyWords();
         double rating = book.getRating();
         int isbn_value = book.getIsbn_value();
 
-        return "The [" + genre +  " ]  [ " + title + " ] written by [ " + author +
-                " ] was published [ " + yearOfPublishing + " ] with the short description:[ "
-                + desc + " ] with following keyWords:" + keyWords + ", and was rated with '"
-                + rating + "/10' and is currently in our library as [ " + isbn_value +  " ]\n";
+        return "The [" + genre +  "]  [" + title + "] written by [" + author +
+                "] was published [" + yearOfPublishing + "] with the short description: \n["
+                + desc + "] with following keyWords:[" + words + "], and was rated with '"
+                + rating + "/10' and is currently in our library as [" + isbn_value +  "]\n";
     }
-
     public void displayAllBooks(){
         for( int i = 0 ; i< booksList.size(); i++) {
             System.out.println(displayABook(booksList.get(i)));
+        }
+    } public void displayAllFullBooks(){
+        for( int i = 0 ; i< booksList.size(); i++) {
+            System.out.println(displayFullBook(booksList.get(i)));
         }
     }
     public void findBy(String[] command){
@@ -85,10 +86,11 @@ public class Library {
                 break;
             }
             case "author": {
-                findByAuthor(criteria);
+                System.out.println( findByAuthor(criteria) );
                 break;
             }
             case "keys":{
+                System.out.println("The following books were found:");
                 findByKeyWords(criteria);
                 break;
             }
@@ -105,13 +107,12 @@ public class Library {
             }
         }
         if( found_flag ){
-            return "Searching with title '" + criteria + "': \n following books were found: \n" +
+            return "Searching with title....'" + criteria + "'\n following books were found: \n" +
                     displayFullBook(booksList.get(i));
         } else {
             return "No book with such an author was found.";
         }
     }
-
     public String findByAuthor(String criteria) {
         int i; boolean found_flag = false;
         for( i = 0 ; i< booksList.size(); i++){
@@ -123,14 +124,46 @@ public class Library {
             }
         }
         if( found_flag ){
-            return "Searching with author '" + criteria + "': \n following books were found: \n" +
+            return "Searching with author....'" + criteria + "' \n following books were found: \n" +
                     displayFullBook(booksList.get(i));
         } else {
             return "No book with such an author was found.";
         }
     }
+    public void findByKeyWords(String criteria) {
+        // find at least 1 criteria match and display it
+            // - create the supporting variables
+        String collectiveString = "";
+        String[] criteriaWords = criteria.split(" "); // [ fantasy, ....]
+        boolean fullMatch_flag = true;
+            // - search for at least 1 match
+        for (Book book : booksList) {
+            String currWordsString = book.getKeyWords(); // a string of "function,fantasy,romance..."
+            /*
+            String[] currBookWords = currWordsString.split(" "); // [function, fantasy, romance]
+            for( int j = 0 ; j< criteriaWords.length; j++){
+                System.out.println(" Results for " + criteriaWords[j]);
+                for( int l = 0 ; l < currBookWords.length ; l++){
+                    if(criteriaWords[j].equals(currBookWords[l])){
+                        collectiveString = String.join(" ", displayABook(booksList.get(i)));
+                        System.out.println(collectiveString);
+                    }
 
-    public String findByKeyWords(String criteria) {
-        return null;
+                }
+            }
+            */
+            for (String criteriaWord : criteriaWords) {
+                if (currWordsString.toLowerCase().contains(criteriaWord.toLowerCase())) {
+                    collectiveString = String.join("\n", collectiveString, displayABook(book) );
+                } else {
+                    fullMatch_flag = false;
+                    break;
+                }
+            }
+            if( fullMatch_flag ) {
+                System.out.println(displayABook(book));
+            }
+        }
     }
+
 }

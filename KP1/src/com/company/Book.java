@@ -22,19 +22,19 @@ public class Book {
 
     // Book Constructor
 
-    public Book(String author, String title, String genre, String description, int yearOfPublishing, String keyWords, double rating, int isbn_value) {
+    public Book(String title, String author, String genre, String description, int yearOfPublishing, String keyWords, double rating, int isbn_value) {
         this.title = title;
         this.author = author;
         this.genre = genre;
         this.description = description;
         this.yearOfPublishing = yearOfPublishing;
-        this.keyWords = keyWords.split(" ");
+        this.keyWords = keyWords.split(",");
         this.rating = rating;
         this.isbn_value = isbn_value;
     }
 
     public String displayWords(){
-        String fullWords = "", currWord;
+        String fullWords = "", currWord = "";
         for( int i = 0 ; i < Arrays.stream(keyWords).count() ; i++){
             currWord = keyWords[i];
             fullWords += "," + currWord;
@@ -62,8 +62,14 @@ public class Book {
         return yearOfPublishing;
     }
 
-    public String[] getKeyWords() {
-        return keyWords;
+    public String getKeyWords() {
+        String keys = "";
+        int i = 0;
+        do {
+            keys += this.keyWords[i] + " ";
+            i++;
+        } while (i < keyWords.length);
+        return keys;
     }
 
     public double getRating() {
