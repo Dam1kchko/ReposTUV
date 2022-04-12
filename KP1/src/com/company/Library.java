@@ -7,16 +7,20 @@ public class Library {
     protected String libName;
     List<Book> booksList = new ArrayList<>();
 
+    public List<Book> getBooksList() {
+        return booksList;
+    }
+
     public Library(String libName) {
         this.libName = libName;
-        this.booksList.add(new Book("Annie","Bachko","comedy","A short story for a darkness sword",1945,
+        this.booksList.add(new Book("Andrew and the Shadow", "Bochko Eha" , "anime", "A rich story of a poor boy", 2012,
+                "fantasy,romance", 5.4, 1002));
+        this.booksList.add(new Book("Back","Connie", "comedy","A short story for a darkness sword",1945,
                                         "fantasy,comedy,action,supernatural",3.4, 1232 ));
-        this.booksList.add(new Book("Aaire", "Andrew and the Shadow", "anime", "A rich story of a poor boy", 2012,
-                                            "fantasy,romance", 5.4, 1002));
+
     }
-    public List<Book> addBook(Book new_book) {
+    public void addBook(Book new_book) {
         booksList.add(new_book);
-        return booksList;
     }
     public String getBookByIsbn(int isbn_value) {
         int i = 0; boolean flag = false;
@@ -136,7 +140,6 @@ public class Library {
         String collectiveString = "";
         String[] criteriaWords = criteria.split(" "); // [ fantasy, ....]
         boolean fullMatch_flag = true;
-            // - search for at least 1 match
         for (Book book : booksList) {
             String currWordsString = book.getKeyWords(); // a string of "function,fantasy,romance..."
             /*

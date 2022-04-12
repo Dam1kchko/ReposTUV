@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.*;
 
@@ -21,7 +18,6 @@ public class Main {
         do {
             userSelected = MenuData();
             switch (userSelected){
-
                 //                   Supportive or in-development Cases
                 case "current": {
                     out.println(UsersData.displayEntry(currentUser));
@@ -60,6 +56,28 @@ public class Main {
                             break;
                         }
                         case "sort": {
+                            switch(commands[2]){
+                                case "author": {
+                                    Collections.sort(lib1.getBooksList() , new AuthorComparator() );
+                                    lib1.displayAllFullBooks();
+                                    break;
+                                }
+                                case "title": {
+                                    Collections.sort(lib1.getBooksList() , new TitleComparator() );
+                                    lib1.displayAllFullBooks();
+                                    break;
+                                }
+                                case "year": {
+                                    Collections.sort(lib1.getBooksList() , new YearComparator() );
+                                    lib1.displayAllFullBooks();
+                                    break;
+                                }
+                                case "rating": {
+                                    Collections.sort(lib1.getBooksList() , new RatingComparator() );
+                                    lib1.displayAllFullBooks();
+                                    break;
+                                }
+                            }
                             break;
                         }
                         case "view": {
@@ -127,7 +145,7 @@ public class Main {
                     }
                     break;
                 }
-                                            // User interface Functions
+                                   // User interface Functions
                 case "login": {
                     if( open_flag ) {
                         login();
@@ -198,16 +216,16 @@ public class Main {
             out.println("exit ===> exists the program");
             if( login_flag ) {
                 out.println("\n  ---------User Interface---------\n");
-                out.println("logout ===> logging out of the system.");
+                out.println("*done* logout ===> logging out of the system.");
             } else {
                 out.println(" ---------User Interface---------");
-                out.println("login ===> logging in in the system");
+                out.println("*done* login ===> logging in in the system");
             }
             out.println("\n  ---------Library Manipulation Interface---------\n");
             out.println("*done* books all ===> display all books");
             out.println("*done* books info <_id> ===> find book by id");
-            out.println("*done* books find <option> <option_string> ===> find book by 'title,author,tag' ");
-            out.println("books sort <asc,desc> ===> sort the books [asc,desc]");
+            out.println("*done by(keyWords) issues * books find <option> <option_string> ===> find book by 'title,author,tag' ");
+            out.println("*done* books sort <option_search> <asc,desc> ===> sort the books [asc,desc]");
             out.println("books view ===>  ? ? ? dunno what is supposed to do. ? ? ? ");
             if( admin_flag ){
                 out.println("\n  ---------Admin Interface---------\n");
