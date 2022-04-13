@@ -1,5 +1,6 @@
 package com.company;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.lang.System.*;
@@ -58,23 +59,55 @@ public class Main {
                         case "sort": {
                             switch(commands[2]){
                                 case "author": {
-                                    Collections.sort(lib1.getBooksList() , new AuthorComparator() );
-                                    lib1.displayAllFullBooks();
+                                    if( commands.length == 3){
+                                        Collections.sort(lib1.getBooksList() , new AuthorComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if( commands[3].equals("asc")){
+                                        Collections.sort(lib1.getBooksList() , new AuthorComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if ( commands[3].equals("desc") ){
+                                        Collections.sort(lib1.getBooksList() , Collections.reverseOrder(new AuthorComparator() ));
+                                        lib1.displayAllFullBooks();
+                                    }
                                     break;
                                 }
                                 case "title": {
-                                    Collections.sort(lib1.getBooksList() , new TitleComparator() );
-                                    lib1.displayAllFullBooks();
+                                    if( commands.length == 3){
+                                        Collections.sort(lib1.getBooksList() , new TitleComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if( commands[3].equals("asc")){
+                                        Collections.sort(lib1.getBooksList() , new TitleComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if ( commands[3].equals("desc") ){
+                                        Collections.sort(lib1.getBooksList() , Collections.reverseOrder(new TitleComparator() ));
+                                        lib1.displayAllFullBooks();
+                                    }
                                     break;
                                 }
                                 case "year": {
-                                    Collections.sort(lib1.getBooksList() , new YearComparator() );
-                                    lib1.displayAllFullBooks();
+                                    if( commands.length == 3){
+                                        Collections.sort(lib1.getBooksList() , new YearComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if( commands[3].equals("asc")){
+                                        Collections.sort(lib1.getBooksList() , new YearComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if ( commands[3].equals("desc") ){
+                                        Collections.sort(lib1.getBooksList() , Collections.reverseOrder(new YearComparator() ));
+                                        lib1.displayAllFullBooks();
+                                    }
                                     break;
                                 }
                                 case "rating": {
-                                    Collections.sort(lib1.getBooksList() , new RatingComparator() );
-                                    lib1.displayAllFullBooks();
+                                    if( commands.length == 3){
+                                        Collections.sort(lib1.getBooksList() , new RatingComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if( commands[3].equals("asc")){
+                                        Collections.sort(lib1.getBooksList() , new RatingComparator() );
+                                        lib1.displayAllFullBooks();
+                                    } else if ( commands[3].equals("desc") ){
+                                        Collections.sort(lib1.getBooksList() , Collections.reverseOrder(new RatingComparator() ));
+                                        lib1.displayAllFullBooks();
+                                    }
                                     break;
                                 }
                             }

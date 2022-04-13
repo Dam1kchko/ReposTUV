@@ -37,7 +37,7 @@ public class Book {
         String fullWords = "", currWord = "";
         for( int i = 0 ; i < Arrays.stream(keyWords).count() ; i++){
             currWord = keyWords[i];
-            fullWords += "," + currWord;
+            fullWords = String.join(",", fullWords, currWord);
         }
         return fullWords;
     }
@@ -62,7 +62,11 @@ public class Book {
         return yearOfPublishing;
     }
 
-    public String getKeyWords() {
+    public String[] getKeyWords(){
+        return this.keyWords;
+    }
+
+    public String displayKeyWords() {
         String keys = "";
         int i = 0;
         do {

@@ -1,7 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Library {
     protected String libName;
@@ -13,10 +12,11 @@ public class Library {
 
     public Library(String libName) {
         this.libName = libName;
-        this.booksList.add(new Book("Andrew and the Shadow", "Bochko Eha" , "anime", "A rich story of a poor boy", 2012,
-                "fantasy,romance", 5.4, 1002));
-        this.booksList.add(new Book("Back","Connie", "comedy","A short story for a darkness sword",1945,
-                                        "fantasy,comedy,action,supernatural",3.4, 1232 ));
+        this.booksList.add(new Book("c","g","comedy","uha",2019,"romance,fantasy",3.4,2304));
+        this.booksList.add(new Book("d","j","theater","uha",1989,"fantasy,comedy",9.1,2004));
+        this.booksList.add(new Book("f","b","action","uha",2010,"comedy,romance,action",4.1,2304));
+        this.booksList.add(new Book("a","z","psychological","uha",2022,"action,psychological",2.6,2304));
+        this.booksList.add(new Book("b","a","egocentric","uha",2001,"psychological,fantasy",3.1,2304));
 
     }
     public void addBook(Book new_book) {
@@ -56,7 +56,7 @@ public class Library {
         String genre = book.getGenre();
         String desc = book.getDescription();
         int yearOfPublishing = book.getYearOfPublishing();
-        String words = book.getKeyWords();
+        String words = book.displayKeyWords();
         double rating = book.getRating();
         int isbn_value = book.getIsbn_value();
 
@@ -69,7 +69,9 @@ public class Library {
         for( int i = 0 ; i< booksList.size(); i++) {
             System.out.println(displayABook(booksList.get(i)));
         }
-    } public void displayAllFullBooks(){
+    }
+
+    public void displayAllFullBooks(){
         for( int i = 0 ; i< booksList.size(); i++) {
             System.out.println(displayFullBook(booksList.get(i)));
         }
@@ -135,37 +137,30 @@ public class Library {
         }
     }
     public void findByKeyWords(String criteria) {
-        // find at least 1 criteria match and display it
-            // - create the supporting variables
-        String collectiveString = "";
-        String[] criteriaWords = criteria.split(" "); // [ fantasy, ....]
-        boolean fullMatch_flag = true;
-        for (Book book : booksList) {
-            String currWordsString = book.getKeyWords(); // a string of "function,fantasy,romance..."
-            /*
-            String[] currBookWords = currWordsString.split(" "); // [function, fantasy, romance]
-            for( int j = 0 ; j< criteriaWords.length; j++){
-                System.out.println(" Results for " + criteriaWords[j]);
-                for( int l = 0 ; l < currBookWords.length ; l++){
-                    if(criteriaWords[j].equals(currBookWords[l])){
-                        collectiveString = String.join(" ", displayABook(booksList.get(i)));
-                        System.out.println(collectiveString);
+        String[] criteriaWords = criteria.trim().split(" ");
+        int matchCounter = 0;
+        Set<Book> matchedBooks = new HashSet<>();
+        for( Book book : booksList) {
+            String[] currWords = book.getKeyWords();
+            for( String currCriteria : criteriaWords) {
+                for( String currWord : currWords){
+                    if( currCriteria.equals(currWord) ){
+                        matchCounter++;
+                        matchedBooks.add(book);
+                        break;
+                    } else {
+                        continue;
                     }
-
                 }
             }
-            */
-            for (String criteriaWord : criteriaWords) {
-                if (currWordsString.toLowerCase().contains(criteriaWord.toLowerCase())) {
-                    collectiveString = String.join("\n", collectiveString, displayABook(book) );
-                } else {
-                    fullMatch_flag = false;
-                    break;
+            if( matchCounter == criteriaWords.length ){
+                for( Book currBook : matchedBooks ){
+                    String result =  displayFullBook( currBook ) ;
+                    System.out.println( result );
                 }
             }
-            if( fullMatch_flag ) {
-                System.out.println(displayABook(book));
-            }
+            matchCounter = 0;
+            matchedBooks.clear();
         }
     }
 
