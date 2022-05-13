@@ -2,27 +2,28 @@ package com.company;
 
 import java.util.*;
 
-public class Library {
-    protected String libName;
-    List<Book> booksList = new ArrayList<>();
+public class Library implements DisplayingBook, findByAttributes {
+
+    private List<Book> booksList = new ArrayList<>();
 
     public List<Book> getBooksList() {
         return booksList;
     }
 
-    public Library(String libName) {
-        this.libName = libName;
-        this.booksList.add(new Book("c","g","comedy","uha",2019,"romance,fantasy",3.4,2304));
-        this.booksList.add(new Book("d","j","theater","uha",1989,"fantasy,comedy",9.1,2004));
-        this.booksList.add(new Book("f","b","action","uha",2010,"comedy,romance,action",4.1,2304));
-        this.booksList.add(new Book("a","z","psychological","uha",2022,"action,psychological",2.6,2304));
-        this.booksList.add(new Book("b","a","egocentric","uha",2001,"psychological,fantasy",3.1,2304));
-
-    }
+    public Library() {
+       this.booksList.add(new Book("g","c","comedy","uha",2019,"romance,fantasy",3.4,3));
+       this.booksList.add(new Book("d","j","theater","uha",1989,"fantasy,comedy",9.1,4));
+       //this.booksList.add(new Book("f","b","action","uha",2010,"comedy,romance,action",4.1,2304));
+       //this.booksList.add(new Book("a","z","psychological","uha",2022,"action,psychological",2.6,2304));
+       //this.booksList.add(new Book("b","a","egocentric","uha",2001,"psychological,fantasy",3.1,2304));
+}
     public void addBook(Book new_book) {
         booksList.add(new_book);
     }
-    public String getBookByIsbn(int isbn_value) {
+    public void emptyTheLibrary(){
+        this.booksList = new ArrayList<>();
+    }
+    public String findByIsbnValue(int isbn_value) {
         int i = 0; boolean flag = false;
         for (i = 0 ; i < booksList.size(); i++) {
             if (booksList.get(i).getIsbn_value() == isbn_value){
@@ -32,31 +33,31 @@ public class Library {
         }
 
         if( flag ) {
-            return displayABook(booksList.get(i));
+            return displayBook(booksList.get(i));
         } else {
-            return " No book with the isbn '" + isbn_value + "' in the library " + this.libName+ " was found.";
+            return " No book with the isbn '" + isbn_value + "' in the library was found.";
         }
     }
     @Override
     public String toString() {
-        return "\n Library " + this.libName +
+        return "\n Library " +
                 " has those books in store : \n"+ booksList;
     }
-    public String displayABook(Book book){
+    //  Display ->
+    public String displayBook(Book book){
         String title = book.getTitle();
         String author = book.getAuthor();
         String genre = book.getGenre();
         int isbn_value = book.getIsbn_value();
         return title + " / " + author + " / " + genre + " / " + isbn_value + "\n";
     }
-
     public String displayFullBook(Book book){
         String title = book.getTitle();
         String author = book.getAuthor();
         String genre = book.getGenre();
         String desc = book.getDescription();
         int yearOfPublishing = book.getYearOfPublishing();
-        String words = book.displayKeyWords();
+        String words = book.keyWordsString();
         double rating = book.getRating();
         int isbn_value = book.getIsbn_value();
 
@@ -67,15 +68,15 @@ public class Library {
     }
     public void displayAllBooks(){
         for( int i = 0 ; i< booksList.size(); i++) {
-            System.out.println(displayABook(booksList.get(i)));
+            System.out.println(displayBook(booksList.get(i)));
         }
     }
-
     public void displayAllFullBooks(){
         for( int i = 0 ; i< booksList.size(); i++) {
             System.out.println(displayFullBook(booksList.get(i)));
         }
     }
+    //  Find ->
     public void findBy(String[] command){
         String key = command[2]; // title,author,keys
         String criteria = "";

@@ -4,24 +4,23 @@ import java.util.Arrays;
 
 public class Book {
     //●  заглавие
-    protected String title;
+    private String title;
     //●  автор
-    protected String author;
+    private String author;
     //●  жанр
-    protected String genre;
+    private String genre;
     //●  кратко описание
-    protected String description;
+    private String description;
     //●  година на издаване
-    protected int yearOfPublishing;
+    private int yearOfPublishing;
     //●  ключови думи
-    protected String[] keyWords;
+    private String[] keyWords;
     //●  рейтинг
-    protected double rating;
+    private double rating;
     //●  уникален номер за библиотеката
-    protected int isbn_value;
+    private int isbn_value;
 
     // Book Constructor
-
     public Book(String title, String author, String genre, String description, int yearOfPublishing, String keyWords, double rating, int isbn_value) {
         this.title = title;
         this.author = author;
@@ -37,7 +36,7 @@ public class Book {
         String fullWords = "", currWord = "";
         for( int i = 0 ; i < Arrays.stream(keyWords).count() ; i++){
             currWord = keyWords[i];
-            fullWords = String.join(",", fullWords, currWord);
+            fullWords = String.join(" ", fullWords, currWord);
         }
         return fullWords;
     }
@@ -62,11 +61,23 @@ public class Book {
         return yearOfPublishing;
     }
 
+
     public String[] getKeyWords(){
         return this.keyWords;
     }
 
-    public String displayKeyWords() {
+
+    public double getRating() {
+        return rating;
+    }
+
+    public int getIsbn_value() {
+        return isbn_value;
+    }
+
+
+
+    public String keyWordsString() {
         String keys = "";
         int i = 0;
         do {
@@ -76,12 +87,23 @@ public class Book {
         return keys;
     }
 
-    public double getRating() {
-        return rating;
+    public String yearForFile(){
+        String year = String.valueOf(this.yearOfPublishing);
+        return year;
     }
 
-    public int getIsbn_value() {
-        return isbn_value;
+    public String ratingForFile(){
+        String year = String.valueOf(this.rating);
+        return year;
+    }
+
+    public String isbnForFile(){
+        String isbn = String.valueOf(this.isbn_value);
+        return isbn;
+    }
+
+    public String keyWordsForFile(){
+        return this.displayWords();
     }
 
     @Override

@@ -10,6 +10,8 @@ public class UsersData {
     public UsersData() {
         User admin = new User("admin","123");
         usersList.put(admin, true);
+        User user = new User("peter","goshko");
+        usersList.put(user, false);
     }
 
     public void addUser(String username, String password){

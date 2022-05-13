@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<booksList>
+<book>
+<title>g</title>
+<author>c</author>
+<genre>comedy</genre>
+<description>uha</description>
+<yearOfPublishing>2019</yearOfPublishing>
+<isbn_value> romance fantasy</isbn_value>
+<rating>3.4</rating>
+<isbn_value>2304</isbn_value>
+</book>
+<book>
+<title>d</title>
+<author>j</author>
+<genre>theater</genre>
+<description>uha</description>
+<yearOfPublishing>1989</yearOfPublishing>
+<isbn_value> fantasy comedy</isbn_value>
+<rating>9.1</rating>
+<isbn_value>2004</isbn_value>
+</book>
+<book>
+<title>a</title>
+<author>aa</author>
+<genre>aaa</genre>
+<description>aaaa</description>
+<yearOfPublishing>1999</yearOfPublishing>
+<isbn_value> fantasy romance</isbn_value>
+<rating>4.5</rating>
+<isbn_value>1029</isbn_value>
+</book>
+<book>
+<title>b</title>
+<author>bb</author>
+<genre>bbb</genre>
+<description>bbbb</description>
+<yearOfPublishing>1955</yearOfPublishing>
+<isbn_value> fantasy</isbn_value>
+<rating>6.8</rating>
+<isbn_value>1523</isbn_value>
+</book>
+</booksList>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class>
+    <book>
+        <title>a</title>
+        <author>aa</author>
+        <genre>aaa</genre>
+        <description>aaaa</description>
+        <yearOfPublishing>1999</yearOfPublishing>
+        <keyWords>fantasy romance</keyWords>
+        <rating>4.5</rating>
+        <isbn_value>4</isbn_value>
+    </book>
+    <book>
+        <title>b</title>
+        <author>bb</author>
+        <genre>bbb</genre>
+        <description>bbbb</description>
+        <yearOfPublishing>1955</yearOfPublishing>
+        <keyWords>fantasy</keyWords>
+        <rating>6.8</rating>
+        <isbn_value>3</isbn_value>
+    </book>
+</class>
