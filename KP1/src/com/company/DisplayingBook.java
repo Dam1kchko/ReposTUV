@@ -6,5 +6,6 @@ public interface DisplayingBook {
     public String displayFullBook(Book book);
     public void displayAllBooks();
     public void displayAllFullBooks();
+    public void displayIsbnNameBooks();
 
 }

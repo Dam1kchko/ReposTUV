@@ -51,6 +51,8 @@ public class UsersData {
     }
 
     public void displayAllUsers(){
+        System.out.println("The following format is used here: " +
+                "\n Username -> Password -> Admin Access ( true / false ):-> ");
         for( Map.Entry<User, Boolean> user : usersList.entrySet() ) {
             System.out.println( displayEntry(user) );
         }
@@ -60,7 +62,7 @@ public class UsersData {
         String username = user.getKey().getUsername();
         String password = user.getKey().getPassword();
         boolean admin_access = user.getValue();
-        return username + " / " + password + " / " + admin_access;
+        return username + " <--> " + password + " <--> " + admin_access;
     }
 
     public boolean is_taken(String username){

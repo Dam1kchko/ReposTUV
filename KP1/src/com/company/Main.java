@@ -1,9 +1,11 @@
 package com.company;
 
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
@@ -11,6 +13,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
 import static java.lang.System.*;
@@ -20,6 +25,7 @@ public class Main {
     public static Library lib1 = new Library();
     public static UsersData Users = new UsersData();
     public static boolean open_flag = false;
+    public static String openedFileName;
     public static String filePath;
     public static boolean login_flag = false;
     public static boolean admin_flag = false;
@@ -42,12 +48,6 @@ public class Main {
                     Users.displayAllUsers();
                     break;
                 }
-                case "remove book": {
-                    int id;
-                    Scanner newScan = new Scanner(System.in);
-                    out.println("Enter id:");
-                    id = newScan.nextInt();
-                }
             }
             String[] commands = userSelected.split(" ");
             switch (commands[0]) {
@@ -58,8 +58,17 @@ public class Main {
                             break;
                         }
                         case "info": {
-                            int isbn = Integer.parseInt(commands[2]);
-                            out.println( lib1.findByIsbnValue(isbn) );
+                            int isbn;
+                            if( commands.length == 2) {
+                                out.println("Empty search parameter");
+                                Scanner scan = new Scanner(in);
+                                out.println("Enter isbn:");
+                                isbn = Integer.parseInt(scan.next());
+                                out.println( lib1.findByIsbnValue(isbn) );
+                            } else {
+                                isbn = Integer.parseInt(commands[2]);
+                                out.println( lib1.findByIsbnValue(isbn) );
+                            }
                             break;
                         }
                         case "find": {
@@ -136,7 +145,10 @@ public class Main {
                         }
                         case "remove": {
                             if( admin_flag) {
-
+                                lib1.displayIsbnNameBooks();
+                                Scanner scan = new Scanner(in);
+                                int isbn = scan.nextInt();
+                                lib1.deleteBookByIsbn(isbn);
                             } else {
                                 out.println("Currently not supported command.");
                             }
@@ -149,20 +161,19 @@ public class Main {
                 case "open": {
                     open_flag = openFile(commands[1]);
                     if( open_flag ){
-                        out.println("The file '" + commands[1] + "' was opened. ");
+                        out.println("The file '" + openedFileName + "' was opened. ");
                     }
                     break;
                 }
                 case "close": {
                     lib1.emptyTheLibrary();
-                    out.println("The last opened file with path'" + filePath + "' was closed.\n The Data was deleted successfully.");
+                    out.println("Successfully closed file " + openedFileName + "\nThe library books were deleted successfully.");
                     open_flag = false;
                     break;
                 }
                 case "save": {
                     if ( open_flag ){
-                        saveInFile(filePath);
-                        out.println("Successfully saved in file: " + filePath);
+                        saveInFile(openedFileName,"not-as");
                     } else {
                         out.println("Currently not supported command.\nOpen a file and try again");
                     }
@@ -170,8 +181,7 @@ public class Main {
                 }
                 case "saveas": {
                     if (open_flag) {
-                        saveInFile(commands[1]);
-                        out.println("Successfully saved as in file: " + commands[1]);
+                        saveInFile(commands[1],"as");
                     }  else {
                         out.println("Currently not supported command.");
                     }
@@ -189,6 +199,7 @@ public class Main {
                 case "exit": {
                     if (open_flag) {
                         out.println("exiting...");
+                        System.exit(0);
                     } else {
                         out.println("Currently not supported command.");
                     }
@@ -204,13 +215,13 @@ public class Main {
                     break;
                 }
                 case "logout": {
-                    if( login_flag && open_flag ) {
+                    if( login_flag ) {
                         if( currentUser.getValue() ){
                             admin_flag = false;
                         }
                         login_flag = false;
                         String currUsername = currentUser.getKey().getUsername();
-                        out.println("The user: '" + currUsername + "' was logged out." );
+                        out.println("The user '" + currUsername + "' was logged out." );
                         currentUser = null;
                     } else {
                         out.println("Currently not supported command.");
@@ -265,9 +276,10 @@ public class Main {
             out.println(" (d) close ===> closes currently opened file");
             out.println(" (d) save ===> saves the currently open file");
             out.println(" (d) saveas <file_path> ===> saves the currently open file in <file>");
+
             out.println("\n  --------- Support Operations Interface---------\n");
-            out.println("help ===> prints this information");
-            out.println("exit ===> exists the program");
+            out.println(" (d) help ===> prints this information");
+            out.println(" (d) exit ===> exists the program");
             if( login_flag ) {
                 out.println("\n  ---------User Interface---------\n");
                 out.println(" (d) logout ===> logging out of the system.");
@@ -278,15 +290,14 @@ public class Main {
             out.println("\n  ---------Library Manipulation Interface---------\n");
             out.println(" (d) books all ===> display all books");
             out.println(" (d) books info <_id> ===> find book by id");
-            out.println(" (d) except -> by(keyWords) issues * books find <option> <option_string> ===> find book by 'title,author,tag' ");
+            out.println(" (d) except -> by(keyWords) issues * books find <option> <option_string> ===> find book by 'title,author,keyWords' ");
             out.println(" (d) books sort <option_search> <asc,desc> ===> sort the books [asc,desc]");
-            out.println("books view ===>  ? ? ? dunno what is supposed to do. ? ? ? ");
             if( admin_flag ){
                 out.println("\n  ---------Admin Interface---------\n");
                 out.println(" (d) user add ===> add an user");
                 out.println(" (d) user remove ===> removes an user");
                 out.println(" (d)-w/o keywords books add ===> add a book in the library");
-                out.println("*no parameter* books remove ===> remove a book in the library \n");
+                out.println(" (d) books remove ( by ISBN_value ) ===> remove a book in the library \n");
             }
 
         }
@@ -328,6 +339,9 @@ public class Main {
         do {
             out.println("Please enter your username:");
             username = scanner.next();
+            if( Users.is_taken(username) ) {
+                out.println("Username is already taken, type new one.");
+            }
         } while ( Users.is_taken(username) );
         out.println("Please enter your password:");
         password = scanner.next();
@@ -389,6 +403,7 @@ public class Main {
                     Element nElement = (Element) nNode;
 
                     String title = nElement.getElementsByTagName("title").item(0).getTextContent();
+                    out.println("The book '" + title + "' was added to the library");
                     String author = nElement.getElementsByTagName("author").item(0).getTextContent();
                     String genre = nElement.getElementsByTagName("genre").item(0).getTextContent();
                     String description = nElement.getElementsByTagName("description").item(0).getTextContent();
@@ -402,15 +417,18 @@ public class Main {
                     result = true;
                 }
             }
+            // set regex "/"
+            String[] currFilePath =  oFilePath.split("/");
+            openedFileName = currFilePath[currFilePath.length -1];
             filePath = oFilePath;
         } catch (Exception e) {
-            e.printStackTrace();
+            //out.println("The file directory you sent was not found");
         }
         return result;
 
     }
 
-    public static void saveInFile(String path){
+    public static void saveInFile(String path, String type){
         try {
             File f = new File(path);
             DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
@@ -458,7 +476,7 @@ public class Main {
                 isbn.appendChild(isbnValue);
 
                 // adding isbn
-                Element keyWords = doc.createElement("isbn_value");
+                Element keyWords = doc.createElement("keyWords");
                 Text keyWordsValue = doc.createTextNode(currBook.keyWordsForFile());
                 keyWords.appendChild(keyWordsValue);
 
@@ -478,14 +496,27 @@ public class Main {
             DOMSource source = new DOMSource(doc);
             String fillerPath = "booking.xml";
             File file = new File(path);
-            Result result = new StreamResult(file);
+            Result result = new StreamResult(new StringWriter());
             TransformerFactory transFactory = TransformerFactory.newInstance();
             Transformer transformer = transFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"no");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source,result);
+            String[] currFilePath =  path.split("/");
+            filePath = path;
+            switch (type){
+                case "not-as": {
+                    out.println("Successfully saved " + currFilePath[currFilePath.length-1] + " with path: " + path);
+                    break;
+                }
+                case "as": {
+                    out.println("Successfully saved as " + currFilePath[currFilePath.length-1] + " with path: " + path);
+                    break;
+                }
+            }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            out.println("Saving your file caused error.");
         }
     }
 }

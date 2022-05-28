@@ -11,8 +11,8 @@ public class Library implements DisplayingBook, findByAttributes {
     }
 
     public Library() {
-       this.booksList.add(new Book("g","c","comedy","uha",2019,"romance,fantasy",3.4,3));
-       this.booksList.add(new Book("d","j","theater","uha",1989,"fantasy,comedy",9.1,4));
+       //this.booksList.add(new Book("The SnowWhite","c","comedy","uha",2019,"romance,fantasy",3.4,1));
+       //this.booksList.add(new Book("BlackWhite","j","theater","uha",1989,"fantasy,comedy",9.1,4));
        //this.booksList.add(new Book("f","b","action","uha",2010,"comedy,romance,action",4.1,2304));
        //this.booksList.add(new Book("a","z","psychological","uha",2022,"action,psychological",2.6,2304));
        //this.booksList.add(new Book("b","a","egocentric","uha",2001,"psychological,fantasy",3.1,2304));
@@ -22,21 +22,6 @@ public class Library implements DisplayingBook, findByAttributes {
     }
     public void emptyTheLibrary(){
         this.booksList = new ArrayList<>();
-    }
-    public String findByIsbnValue(int isbn_value) {
-        int i = 0; boolean flag = false;
-        for (i = 0 ; i < booksList.size(); i++) {
-            if (booksList.get(i).getIsbn_value() == isbn_value){
-                flag = true;
-                break;
-            }
-        }
-
-        if( flag ) {
-            return displayBook(booksList.get(i));
-        } else {
-            return " No book with the isbn '" + isbn_value + "' in the library was found.";
-        }
     }
     @Override
     public String toString() {
@@ -49,7 +34,7 @@ public class Library implements DisplayingBook, findByAttributes {
         String author = book.getAuthor();
         String genre = book.getGenre();
         int isbn_value = book.getIsbn_value();
-        return title + " / " + author + " / " + genre + " / " + isbn_value + "\n";
+        return title + " -> " + author + " -> " + genre + " -> " + isbn_value ;
     }
     public String displayFullBook(Book book){
         String title = book.getTitle();
@@ -67,15 +52,37 @@ public class Library implements DisplayingBook, findByAttributes {
                 + rating + "/10' and is currently in our library as [" + isbn_value +  "]\n";
     }
     public void displayAllBooks(){
-        for( int i = 0 ; i< booksList.size(); i++) {
-            System.out.println(displayBook(booksList.get(i)));
+        if( booksList.size() == 0 ){
+            System.out.println("The library is empty");
+        } else {
+            System.out.println("The following format is used here: " +
+                    "\n Title -> Author -> Genre -> ISBN_value :-> ");
+            for( int i = 0 ; i< booksList.size(); i++) {
+                System.out.println(displayBook(booksList.get(i)));
+            }
         }
     }
     public void displayAllFullBooks(){
-        for( int i = 0 ; i< booksList.size(); i++) {
-            System.out.println(displayFullBook(booksList.get(i)));
+        if( booksList.size() == 0 ){
+            System.out.println("The library is empty");
+        } else {
+            System.out.println("The following format is used here: " +
+                    "\n Title -> Author -> Genre -> ISBN_value :-> ");
+            for( int i = 0 ; i< booksList.size(); i++) {
+                System.out.println(displayFullBook(booksList.get(i)));
+            }
         }
     }
+    public void displayIsbnNameBooks(){
+        if( booksList.size() == 0 ){
+            System.out.println("The library is empty");
+        } else {
+            for (int i = 0 ; i < booksList.size(); i++){
+                System.out.println("ISBN:" + booksList.get(i).getIsbn_value() +
+                        " & TITLE: " + booksList.get(i).getTitle());
+            }
+        }
+    };
     //  Find ->
     public void findBy(String[] command){
         String key = command[2]; // title,author,keys
@@ -89,11 +96,13 @@ public class Library implements DisplayingBook, findByAttributes {
         }
         switch( key ){
             case "title": {
-                System.out.println( findByTitle(criteria) );
+                System.out.println("The following books were found:");
+                findByTitle(criteria);
                 break;
             }
             case "author": {
-                System.out.println( findByAuthor(criteria) );
+                System.out.println("The following books were found:");
+                findByAuthor(criteria);
                 break;
             }
             case "keys":{
@@ -103,38 +112,38 @@ public class Library implements DisplayingBook, findByAttributes {
             }
         }
     }
-    public String findByTitle(String criteria) {
+    public void findByTitle(String criteria) {
         int i; boolean found_flag = false;
         for( i = 0 ; i< booksList.size(); i++){
             String title = booksList.get(i).getTitle();
             criteria = criteria.trim();
-            if( criteria.equals(title)) {
+            if( title.contains(criteria)) {
                 found_flag = true;
                 break;
             }
         }
         if( found_flag ){
-            return "Searching with title....'" + criteria + "'\n following books were found: \n" +
-                    displayFullBook(booksList.get(i));
+            System.out.println("Searching with title....'" + criteria + "'\n following books were found: \n" +
+                    displayFullBook(booksList.get(i)));
         } else {
-            return "No book with such an author was found.";
+            System.out.println("No book with such an author was found.");
         }
     }
-    public String findByAuthor(String criteria) {
+    public void findByAuthor(String criteria) {
         int i; boolean found_flag = false;
         for( i = 0 ; i< booksList.size(); i++){
             String author = booksList.get(i).getAuthor();
             criteria = criteria.trim();
-            if( criteria.equals(author)) {
+            if( author.contains(criteria) ) {
                found_flag = true;
                break;
             }
         }
         if( found_flag ){
-            return "Searching with author....'" + criteria + "' \n following books were found: \n" +
-                    displayFullBook(booksList.get(i));
+            System.out.println( "Searching with author '" + criteria + "...' \n following books were found: \n" +
+                    displayFullBook(booksList.get(i))) ;
         } else {
-            return "No book with such an author was found.";
+            System.out.println( "No book with such an author was found." );
         }
     }
     public void findByKeyWords(String criteria) {
@@ -162,6 +171,33 @@ public class Library implements DisplayingBook, findByAttributes {
             }
             matchCounter = 0;
             matchedBooks.clear();
+        }
+    }
+    public String findByIsbnValue(int isbn_value) {
+        int i = 0; boolean flag = false;
+        for (i = 0 ; i < booksList.size(); i++) {
+            if (booksList.get(i).getIsbn_value() == isbn_value){
+                flag = true;
+                break;
+            }
+        }
+
+        if( flag ) {
+            System.out.println("The following format is used here: " +
+                    "\n Title -> Author -> Genre -> ISBN_value :-> ");
+            return displayBook(booksList.get(i));
+        } else {
+            return " No book with the isbn '" + isbn_value + "' in the library was found.";
+        }
+    }
+
+    public void deleteBookByIsbn(int target_isbn){
+        for (int i = 0 ; i < booksList.size(); i++){
+            Book currBook = booksList.get(i);
+            if( target_isbn == currBook.getIsbn_value() ){
+                booksList.remove(currBook);
+                System.out.println("The book '" + currBook.getTitle() + "' and isbn number " + currBook.getIsbn_value() + "was successfully removed.");
+            }
         }
     }
 
