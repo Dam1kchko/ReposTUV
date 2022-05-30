@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<booksList>
+<book>
+<title>Don Quixote</title>
+<author>Miguel de Cervantes</author>
+<genre>novel</genre>
+<description>Short Description</description>
+<yearOfPublishing>2000</yearOfPublishing>
+<keyWords> fantasy</keyWords>
+<rating>4.5</rating>
+<isbn_value>2</isbn_value>
+</book>
+<book>
+<title>Lord of the Rings</title>
+<author>J.R.R. Tolkien</author>
+<genre>Fantasy Fiction</genre>
+<description>Short Description</description>
+<yearOfPublishing>1999</yearOfPublishing>
+<keyWords> fantasy adventure medieval</keyWords>
+<rating>6.8</rating>
+<isbn_value>3</isbn_value>
+</book>
+<book>
+<title>Harry Potter and the Sorcerers Stone</title>
+<author>J.K. Rowling</author>
+<genre>Fantasy Fiction</genre>
+<description>Short Description</description>
+<yearOfPublishing>1995</yearOfPublishing>
+<keyWords> fantasy adventure</keyWords>
+<rating>6.8</rating>
+<isbn_value>4</isbn_value>
+</book>
+<book>
+<title>Title B</title>
+<author>Author B</author>
+<genre>Genre B</genre>
+<description>Desc B</description>
+<yearOfPublishing>1934</yearOfPublishing>
+<keyWords> </keyWords>
+<rating>2.3</rating>
+<isbn_value>11</isbn_value>
+</book>
+</booksList>
